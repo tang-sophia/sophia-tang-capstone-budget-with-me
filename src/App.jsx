@@ -2,9 +2,12 @@ import "./App.scss";
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginPage from "./pages/LoginPage/LoginPage";
 import Topbar from "./components/Topbar/Topbar";
+import Sidebar from "./components/Sidebar/Sidebar";
+import LoginPage from "./pages/LoginPage/LoginPage";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
+import BudgetPage from "./pages/BudgetPage/BudgetPage";
+import CalendarPage from "./pages/CalendarPage/CalendarPage";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -13,9 +16,10 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <Topbar />
+        <Sidebar />
         <div className="app">
           <main className="content">
-            <Topbar />
             {/* -=-=-=-=-=-=-=-=-=-ROUTES-=-=-=-=-=-=-=-=- */}
             {/* -=-=-=-=-=-=-=-=-=-ROUTES-=-=-=-=-=-=-=-=- */}
             {/* -=-=-=-=-=-=-=-=-=-ROUTES-=-=-=-=-=-=-=-=- */}
@@ -32,6 +36,8 @@ function App() {
                 {/* ROUTES */}
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/budget" element={<BudgetPage />} />
+                <Route path="/calendar" element={<CalendarPage />} />
               </Routes>
             </BrowserRouter>
           </main>

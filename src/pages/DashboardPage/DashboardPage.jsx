@@ -1,7 +1,7 @@
 import "../DashboardPage/DashboardPage.scss";
 
 const DashboardPage = () => {
-  return <div className="dashboard">DashboardPage</div>;
+  return <div>Dashboard</div>;
 };
 
 export default DashboardPage;
