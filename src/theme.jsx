@@ -1,7 +1,6 @@
 import { createContext, useState, useMemo } from "react";
 import { createTheme } from "@mui/material/styles";
 
-// Color design tokens
 export const tokens = (mode) => ({
   ...(mode === "dark"
     ? {
@@ -12,7 +11,7 @@ export const tokens = (mode) => ({
           400: "#3d456b",
           500: "#0c1746",
           600: "#0a1238",
-          700: "#070e2a",
+          700: "#070e2c",
           800: "#05091c",
           900: "#02050e",
         },
@@ -139,7 +138,6 @@ export const themeSettings = (mode) => {
   };
 };
 
-// context for color mixBlend:
 export const ColorModeContext = createContext({
   toggleColorMode: () => {},
 });
