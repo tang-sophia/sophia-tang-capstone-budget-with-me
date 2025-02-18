@@ -1,0 +1,36 @@
+.ps-sidebar-container {
+  background-color: var(--sidebar-bg-color) !important;
+  height: 100vh;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.ps-menu-root,
+.css-ewdv3l {
+  background-color: var(--sidebar-bg-color) !important;
+}
+
+.ps-menuitem-root,
+.ps-menu-button {
+  background-color: inherit !important;
+}
+
+.ps-sidebar-container,
+.ps-menu-root,
+.css-ewdv3l,
+.ps-menuitem-root,
+.ps-menu-button {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.ps-sidebar-root,
+.ps-sidebar-border {
+  border-right: none !important;
+  background-color: var(--sidebar-bg-color) !important;
+}
+
+.menu-items {
+  padding-left: 2rem;
+}
