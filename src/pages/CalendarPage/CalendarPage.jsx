@@ -52,7 +52,7 @@ const CalendarPage = () => {
       ...newEvent,
       start: selected.startStr,
       end: selected.endStr,
-      due_date: selected.startStr,
+      due_date: selected.startStr, // Keep the due date intact
     });
     setOpenDialog(true);
   };
@@ -103,6 +103,13 @@ const CalendarPage = () => {
           event.id === "temp-id" ? { ...event, id: savedEvent.id } : event
         )
       );
+
+      // Reset the fields except for the date
+      setNewEvent((prev) => ({
+        ...prev,
+        name: "",
+        category: "",
+      }));
 
       setOpenDialog(false);
     } catch (error) {
