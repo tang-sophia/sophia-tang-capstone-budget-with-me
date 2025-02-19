@@ -18,13 +18,19 @@ const Header = ({ title, subtitle }) => {
       width="100%"
       padding="20px 0"
     >
-      <Box display="flex" alignItems="center" gap={1}>
+      <Box display="flex" alignItems="center" position="relative">
         <Typography variant="h1">{title}</Typography>
+
         <IconButton
           onClick={handleRefresh}
-          sx={{ color: "primary.main", "&:hover": { color: "secondary.main" } }}
+          sx={{
+            position: "absolute",
+            right: "-40px",
+            color: "primary.main",
+            "&:hover": { color: "secondary.main" },
+          }}
         >
-          <RefreshIcon fontSize="small" />
+          <RefreshIcon />
         </IconButton>
       </Box>
       <Typography variant="h4" className="calendar__subtitle">
