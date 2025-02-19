@@ -1,10 +1,11 @@
 import "../CalendarPage/CalendarPage.scss";
 import { useState, useEffect } from "react";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import Calendar from "../../components/Calendar/Calendar";
 import NewCalendarEntryBox from "../../components/NewCalendarEntryBox/NewCalendarEntryBox";
 import DeleteCalendarEntryBox from "../../components/DeleteCalendarEntryBox/DeleteCalendarEntryBox";
+import Header from "../../components/Header/Header";
 
 const API_URL = "http://localhost:8080/api/calendar";
 
@@ -169,11 +170,7 @@ const CalendarPage = () => {
 
   return (
     <Box m="20px">
-      <Typography variant="h1">CALENDAR</Typography>
-      <Typography variant="h4" className="calendar__subtitle">
-        Full Calendar Interactive Page
-      </Typography>
-
+      <Header title="CALENDAR" subtitle="Due Dates and Reminders" />{" "}
       <Box
         display="flex"
         justifyContent="space-between"
@@ -188,7 +185,6 @@ const CalendarPage = () => {
           />
         </Box>
       </Box>
-
       <NewCalendarEntryBox
         openDialog={openDialog}
         setOpenDialog={setOpenDialog}
@@ -198,7 +194,6 @@ const CalendarPage = () => {
         handleCategoryChange={handleCategoryChange}
         handleChange={handleChange}
       />
-
       <DeleteCalendarEntryBox
         open={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}

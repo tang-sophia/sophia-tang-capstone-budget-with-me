@@ -9,9 +9,9 @@ const Calendar = ({ currentEvents, handleDateClick, handleEventClick }) => {
       height="75vh"
       plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
       headerToolbar={{
-        left: "prev today",
+        left: "prev",
         center: "title",
-        right: "next",
+        right: "today next",
       }}
       initialView="dayGridMonth"
       editable={true}
