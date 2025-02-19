@@ -1,8 +1,5 @@
-import "../Calendar/Calendar.scss";
-import React from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 
@@ -10,11 +7,11 @@ const Calendar = ({ currentEvents, handleDateClick, handleEventClick }) => {
   return (
     <FullCalendar
       height="75vh"
-      plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
+      plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
       headerToolbar={{
-        left: "prev,next today",
+        left: "prev today",
         center: "title",
-        right: "dayGridMonth,timeGridWeek",
+        right: "next",
       }}
       initialView="dayGridMonth"
       editable={true}

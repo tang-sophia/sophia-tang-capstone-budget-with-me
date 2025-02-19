@@ -52,7 +52,7 @@ const CalendarPage = () => {
       ...newEvent,
       start: selected.startStr,
       end: selected.endStr,
-      due_date: selected.startStr, // Keep the due date intact
+      due_date: selected.startStr,
     });
     setOpenDialog(true);
   };
@@ -104,7 +104,6 @@ const CalendarPage = () => {
         )
       );
 
-      // Reset the fields except for the date
       setNewEvent((prev) => ({
         ...prev,
         name: "",
@@ -161,6 +160,7 @@ const CalendarPage = () => {
             currentEvents={currentEvents}
             handleDateClick={handleDateClick}
             handleEventClick={handleEventClick}
+            views={["dayGridMonth"]}
           />
         </Box>
       </Box>
