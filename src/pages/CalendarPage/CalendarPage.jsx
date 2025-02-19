@@ -1,123 +1,172 @@
 import "../CalendarPage/CalendarPage.scss";
-import { useState } from "react";
-import FullCalendar from "@fullcalendar/react";
-import { formatDate } from "@fullcalendar/core";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import listPlugin from "@fullcalendar/list";
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-  useTheme,
-} from "@mui/material";
-// import Header from "../../components/Header/Header";
+import { useState, useEffect } from "react";
+import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
+import Calendar from "../../components/Calendar/Calendar";
+import NewCalendarEntryBox from "../../components/NewCalendarEntryBox/NewCalendarEntryBox";
+
+const API_URL = "http://localhost:8080/api/calendar";
 
 const CalendarPage = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [currentEvents, setCurrentEvents] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [newEvent, setNewEvent] = useState({
+    name: "",
+    due_date: "",
+    category: "",
+    start: "",
+    end: "",
+  });
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+
+        const transformedEvents = data.map((event) => ({
+          id: event.id || "default-id",
+          title: event.name || "Untitled Event",
+          start: event.due_date || new Date().toISOString(),
+          end: event.due_date || new Date().toISOString(),
+          allDay: true,
+        }));
+
+        transformedEvents.sort(
+          (a, b) => new Date(a.start || 0) - new Date(b.start || 0)
+        );
+
+        setCurrentEvents(transformedEvents);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   const handleDateClick = (selected) => {
-    const title = prompt("Please enter a new title for your event");
-    const calendarApi = selected.view.calendar;
-    calendarApi.unselect();
+    setNewEvent({
+      ...newEvent,
+      start: selected.startStr,
+      end: selected.endStr,
+      due_date: selected.startStr,
+    });
+    setOpenDialog(true);
+  };
 
-    if (title) {
-      calendarApi.addEvent({
-        id: `${selected.dateStr}-${title}`,
-        title,
-        start: selected.startStr,
-        end: selected.endStr,
-        allDay: selected.allDay,
+  const handleCategoryChange = (e) => {
+    setNewEvent({ ...newEvent, category: e.target.value });
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewEvent({ ...newEvent, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!newEvent.name || !newEvent.due_date || !newEvent.category) {
+      alert("Please fill out all fields.");
+      return;
+    }
+
+    const eventStart = newEvent.due_date;
+    const eventEnd = newEvent.due_date;
+
+    const newEventData = {
+      ...newEvent,
+      id: "temp-id",
+      start: eventStart,
+      end: eventEnd,
+      title: newEvent.name,
+    };
+
+    setCurrentEvents((prevEvents) => [...prevEvents, newEventData]);
+
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newEvent),
       });
+
+      const savedEvent = await response.json();
+
+      setCurrentEvents((prevEvents) =>
+        prevEvents.map((event) =>
+          event.id === "temp-id" ? { ...event, id: savedEvent.id } : event
+        )
+      );
+
+      setOpenDialog(false);
+    } catch (error) {
+      alert("Error adding event");
+      console.error("Error adding event:", error);
+
+      setCurrentEvents((prevEvents) =>
+        prevEvents.filter((event) => event.id !== "temp-id")
+      );
     }
   };
-  const handleEventClick = (selected) => {
+
+  const handleEventClick = async (selected) => {
     if (
       window.confirm(
-        `Are you sure you want to the delete the event '${selected.event.title}'`
+        `Are you sure you want to delete the event '${selected.event.title}'?`
       )
     ) {
-      selected.event.remove();
+      try {
+        await fetch(`${API_URL}/${selected.event.id}`, {
+          method: "DELETE",
+        });
+
+        selected.event.remove();
+        setCurrentEvents((prevEvents) =>
+          prevEvents.filter((event) => event.id !== selected.event.id)
+        );
+      } catch (error) {
+        alert("Error deleting event");
+        console.error("Error deleting event:", error);
+      }
     }
   };
 
   return (
     <Box m="20px">
-      <h1>CALENDAR</h1>
-      <h4 className="calendar__subtitle">Full Calendar Interactive Page</h4>
+      <Typography variant="h1">CALENDAR</Typography>
+      <Typography variant="h4" className="calendar__subtitle">
+        Full Calendar Interactive Page
+      </Typography>
 
-      <Box display="flex" justifyContent="space-between">
-        {/* CALENDAR SIDEBAR */}
-        <Box
-          flex="1 1 20%"
-          backgroundColor={colors.primary[400]}
-          p="15px"
-          borderRadius="4px"
-        >
-          <Typography variant="h5">Events</Typography>
-          <List>
-            {currentEvents.map((event) => (
-              <ListItem
-                key={event.id}
-                sx={{
-                  margin: "10px 0",
-                  borderRadius: "2px",
-                }}
-              >
-                ß
-                <ListItemText
-                  primary={event.title}
-                  secondary={
-                    <Typography>
-                      {formatDate(event.start, {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </Typography>
-                  }
-                />
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-
-        {/* CALENDAR */}
-        <Box flex="1 1 100%" ml="15px">
-          <FullCalendar
-            height="75vh"
-            plugins={[
-              dayGridPlugin,
-              timeGridPlugin,
-              interactionPlugin,
-              listPlugin,
-            ]}
-            headerToolbar={{
-              left: "prev, next today",
-              center: "title",
-              right: "dayGridMonth, timeGridWeek, timeGridDay, listMonth",
-            }}
-            initialView="dayGridMonth"
-            editable={true}
-            selectable={true}
-            selectMirror={true}
-            dayMaxEvents={true}
-            select={handleDateClick}
-            eventClick={handleEventClick}
-            eventsSet={(events) => setCurrentEvents(events)}
-            initialEvents={[
-              { id: "1234", title: "All-day event", date: "2025-02-14" },
-              { id: "4321", title: "Timed Event", date: "2025-02-15" },
-            ]}
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        flexDirection={{ xs: "column", md: "row" }}
+      >
+        <Box flex="1 1 100%" ml={{ xs: "0", md: "15px" }}>
+          <Calendar
+            currentEvents={currentEvents}
+            handleDateClick={handleDateClick}
+            handleEventClick={handleEventClick}
           />
         </Box>
       </Box>
+
+      <NewCalendarEntryBox
+        openDialog={openDialog}
+        setOpenDialog={setOpenDialog}
+        newEvent={newEvent}
+        setNewEvent={setNewEvent}
+        handleSubmit={handleSubmit}
+        handleCategoryChange={handleCategoryChange}
+        handleChange={handleChange}
+      />
     </Box>
   );
 };

@@ -1,3 +1,9 @@
 .calendar__subtitle {
   padding-bottom: 2rem;
+  padding-top: 0.5rem;
+}
+
+.fc-header-toolbar .fc-toolbar-title,
+.fc-header-toolbar .fc-button {
+  text-transform: capitalize;
 }
