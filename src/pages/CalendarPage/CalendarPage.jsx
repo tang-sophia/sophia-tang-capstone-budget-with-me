@@ -4,6 +4,7 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import Calendar from "../../components/Calendar/Calendar";
 import NewCalendarEntryBox from "../../components/NewCalendarEntryBox/NewCalendarEntryBox";
+import DeleteCalendarEntryBox from "../../components/DeleteCalendarEntryBox/DeleteCalendarEntryBox";
 
 const API_URL = "http://localhost:8080/api/calendar";
 
@@ -12,6 +13,8 @@ const CalendarPage = () => {
   const colors = tokens(theme.palette.mode);
   const [currentEvents, setCurrentEvents] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [eventToDelete, setEventToDelete] = useState(null);
   const [newEvent, setNewEvent] = useState({
     name: "",
     due_date: "",
@@ -121,25 +124,46 @@ const CalendarPage = () => {
     }
   };
 
-  const handleEventClick = async (selected) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete the event '${selected.event.title}'?`
-      )
-    ) {
-      try {
-        await fetch(`${API_URL}/${selected.event.id}`, {
-          method: "DELETE",
-        });
+  const handleEventClick = (selected) => {
+    setEventToDelete(selected.event);
+    setDeleteModalOpen(true);
+  };
 
-        selected.event.remove();
-        setCurrentEvents((prevEvents) =>
-          prevEvents.filter((event) => event.id !== selected.event.id)
-        );
-      } catch (error) {
-        alert("Error deleting event");
-        console.error("Error deleting event:", error);
+  const handleDeleteConfirm = async () => {
+    if (!eventToDelete) return;
+
+    const updatedEvents = currentEvents.filter(
+      (event) => event.id !== eventToDelete.id
+    );
+    setCurrentEvents(updatedEvents);
+
+    try {
+      const response = await fetch(`${API_URL}/${eventToDelete.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete event from server.");
       }
+
+      setDeleteModalOpen(false);
+      setEventToDelete(null);
+
+      const fetchResponse = await fetch(API_URL);
+      const data = await fetchResponse.json();
+      const transformedEvents = data.map((event) => ({
+        id: event.id || "default-id",
+        title: event.name || "Untitled Event",
+        start: event.due_date || new Date().toISOString(),
+        end: event.due_date || new Date().toISOString(),
+        allDay: true,
+      }));
+      setCurrentEvents(transformedEvents);
+    } catch (error) {
+      setCurrentEvents((prevEvents) => [...prevEvents, eventToDelete]);
+
+      alert("Error deleting event");
+      console.error("Error deleting event:", error);
     }
   };
 
@@ -173,6 +197,14 @@ const CalendarPage = () => {
         handleSubmit={handleSubmit}
         handleCategoryChange={handleCategoryChange}
         handleChange={handleChange}
+      />
+
+      <DeleteCalendarEntryBox
+        open={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        eventToDelete={eventToDelete}
+        onDeleteConfirm={handleDeleteConfirm}
+        theme={theme}
       />
     </Box>
   );
