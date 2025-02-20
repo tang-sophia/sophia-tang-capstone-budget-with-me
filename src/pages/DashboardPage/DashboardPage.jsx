@@ -28,11 +28,13 @@ const DashboardPage = () => {
           percentage="20% less than last week"
         />
       </div>
-      <div className="dashboard__reminders">
-        <DashboardReminders />
-      </div>
-      <div className="dashboard__expenses">
-        <DashboardExpenses />
+      <div className="dashboard__bottom-container">
+        <div className="dashboard__reminders">
+          <DashboardReminders />
+        </div>
+        <div className="dashboard__expenses">
+          <DashboardExpenses />
+        </div>
       </div>
     </div>
   );

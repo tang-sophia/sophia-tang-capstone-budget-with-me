@@ -8,7 +8,6 @@ import BudgetPage from "./pages/BudgetPage/BudgetPage";
 import CalendarPage from "./pages/CalendarPage/CalendarPage";
 import Topbar from "./components/Topbar/Topbar";
 import SidebarList from "./components/SidebarList/SidebarList";
-import Footer from "./components/Footer/Footer";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -30,7 +29,6 @@ function App() {
             </Routes>
           </main>
         </div>
-        <Footer />
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

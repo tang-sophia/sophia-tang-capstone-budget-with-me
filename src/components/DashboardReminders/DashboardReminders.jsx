@@ -38,12 +38,9 @@ const DashboardReminders = () => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        const filteredData = data
-          .filter((item) => {
-            const dueDate = new Date(item.due_date);
-            return dueDate >= today;
-          })
-          .sort((a, b) => new Date(a.due_date) - new Date(b.due_date));
+        const filteredData = data.sort(
+          (a, b) => new Date(a.due_date) - new Date(b.due_date)
+        );
 
         const mappedData = filteredData.map((item, index) => ({
           id: index,
@@ -71,7 +68,7 @@ const DashboardReminders = () => {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        height="30vh"
+        height="25vh"
       >
         <CircularProgress />
       </Box>
@@ -84,7 +81,7 @@ const DashboardReminders = () => {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        height="30vh"
+        height="25vh"
       >
         <Typography color="error">{error}</Typography>
       </Box>
@@ -111,14 +108,12 @@ const DashboardReminders = () => {
         justifyContent="space-between"
         flexDirection={{ xs: "column", md: "row" }}
       >
-        <Box m="40px 0 0 0" height="30vh" width={"100%"}>
+        <Box m="40px 0 0 0" height="100vh">
           <DataGrid
             rows={rows}
             columns={columns}
             disableColumnResize
             sx={{ width: "100%" }}
-            pageSize={5}
-            rowsPerPageOptions={[5, 10, 20]}
             getRowClassName={(params) =>
               params.row.isDueToday ? "highlight-row" : ""
             }

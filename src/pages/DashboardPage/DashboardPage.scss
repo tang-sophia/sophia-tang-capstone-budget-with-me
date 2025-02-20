@@ -18,4 +18,9 @@
     display: flex;
     justify-content: center;
   }
+
+  &__bottom-container {
+    display: flex;
+    flex-direction: row;
+  }
 }
