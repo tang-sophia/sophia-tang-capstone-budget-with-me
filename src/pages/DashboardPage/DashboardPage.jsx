@@ -1,11 +1,16 @@
 import "../DashboardPage/DashboardPage.scss";
+import { Box } from "@mui/material";
 import DashboardCard from "../../components/DashboardCard/DashboardCard";
 import DashboardExpenses from "../../components/DashboardExpenses/DashboardExpenses";
 import DashboardReminders from "../../components/DashboardReminders/DashboardReminders";
+import Header from "../../components/Header/Header";
 
 const DashboardPage = () => {
   return (
     <div className="dashboard">
+      <Box>
+        <Header title="DASHBOARD" subtitle="Monitoring your Financial Health" />
+      </Box>
       <div className="dashboard__cards">
         <DashboardCard
           title="Total Expenses"
@@ -23,11 +28,11 @@ const DashboardPage = () => {
           percentage="20% less than last week"
         />
       </div>
-      <div className="dashboard__expenses">
-        <DashboardExpenses />
-      </div>
       <div className="dashboard__reminders">
         <DashboardReminders />
+      </div>
+      <div className="dashboard__expenses">
+        <DashboardExpenses />
       </div>
     </div>
   );
