@@ -1,0 +1,19 @@
+.dashboard-card {
+  &__container {
+    background-color: rgba($color: gray, $alpha: 0.2);
+    padding: 1.25rem;
+    margin-right: 1.25rem;
+    border-radius: 0.625rem;
+    display: flex;
+    width: 100%;
+
+    &:hover {
+      background-color: rgba($color: gray, $alpha: 0.3);
+    }
+  }
+
+  &__data {
+    display: flex;
+    flex-direction: column;
+  }
+}
