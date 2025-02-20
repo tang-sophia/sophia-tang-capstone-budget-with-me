@@ -5,7 +5,7 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header/Header";
 import axios from "axios";
 import NewBudgetEntry from "../../components/NewBudgetEntry/NewBudgetEntry";
-import DeleteBudgetEntryBox from "../../components/DeleteBudgetEntryBox/DeleteBudgetEntryBox"; // Import the delete dialog component
+import DeleteBudgetEntryBox from "../../components/DeleteBudgetEntryBox/DeleteBudgetEntryBox";
 
 const BudgetPage = () => {
   const theme = useTheme();

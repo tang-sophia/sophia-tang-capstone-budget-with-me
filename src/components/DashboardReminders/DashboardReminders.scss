@@ -1,0 +1,27 @@
+.dashboard-reminder {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 80vw;
+    overflow: auto;
+    background-color: rgba($color: gray, $alpha: 0.2);
+    border-radius: 0.625rem;
+    margin-left: 1rem;
+    margin-right: 1.25rem;
+  }
+
+  &__title {
+    padding-top: 1rem;
+    position: relative;
+    top: 0.75rem;
+    justify-content: center;
+  }
+}
+
+.highlight-row {
+  background-color: rgb(123, 36, 36);
+  font-weight: bold;
+  color: white;
+  text-transform: uppercase;
+}
