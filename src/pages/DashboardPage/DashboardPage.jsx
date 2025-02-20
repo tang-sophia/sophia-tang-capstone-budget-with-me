@@ -1,9 +1,9 @@
 import "../DashboardPage/DashboardPage.scss";
-import { Box } from "@mui/material";
+// import { Box } from "@mui/material";
 import DashboardCard from "../../components/DashboardCard/DashboardCard";
 import DashboardExpenses from "../../components/DashboardExpenses/DashboardExpenses";
 import DashboardReminders from "../../components/DashboardReminders/DashboardReminders";
-import Header from "../../components/Header/Header";
+// import Header from "../../components/Header/Header";
 
 const DashboardPage = () => {
   return (
