@@ -1,3 +1,4 @@
+import "../DeleteBudgetEntryBox/DeleteBudgetEntryBox.scss";
 import React from "react";
 import {
   Dialog,
@@ -8,10 +9,10 @@ import {
   Typography,
 } from "@mui/material";
 
-const DeleteCalendarEntryBox = ({
+const DeleteBudgetEntryBox = ({
   open = false,
   onClose = () => {},
-  eventToDelete = {},
+  budgetToDelete = {},
   onDeleteConfirm = () => {},
   theme,
 }) => {
@@ -35,22 +36,27 @@ const DeleteCalendarEntryBox = ({
     theme?.palette?.mode === "dark" ? darkModeColors : lightModeColors;
 
   return (
-    <Dialog open={open} onClose={onClose} aria-labelledby="delete-event-dialog">
+    <Dialog
+      open={open}
+      onClose={onClose}
+      aria-labelledby="delete-budget-dialog"
+    >
       <DialogTitle
-        id="delete-event-dialog"
+        id="delete-budget-dialog"
         sx={{
           backgroundColor: colors.primaryBackground,
           color: colors.titleColor,
         }}
       >
-        Delete Event
+        Delete Budget Entry
       </DialogTitle>
       <DialogContent
         sx={{ backgroundColor: colors.primaryBackground, padding: "20px" }}
       >
         <Typography variant="body1" sx={{ color: colors.textColor }}>
-          Are you sure you want to delete the event{" "}
-          <strong>"{eventToDelete?.title}"</strong>?
+          Are you sure you want to delete the budget entry for{" "}
+          <strong>"{budgetToDelete?.category}"</strong> with an amount of{" "}
+          <strong>${budgetToDelete?.amount}</strong>?
         </Typography>
       </DialogContent>
       <DialogActions sx={{ backgroundColor: colors.primaryBackground }}>
@@ -65,4 +71,4 @@ const DeleteCalendarEntryBox = ({
   );
 };
 
-export default DeleteCalendarEntryBox;
+export default DeleteBudgetEntryBox;

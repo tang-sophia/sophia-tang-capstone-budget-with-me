@@ -1,0 +1,245 @@
+// import React, { useState, useEffect } from "react";
+// import { Box, Button } from "@mui/material";
+// import axios from "axios";
+// import {
+//   Container,
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableContainer,
+//   TableHead,
+//   TableRow,
+//   Paper,
+//   Snackbar,
+//   Alert,
+// } from "@mui/material";
+// import NewBudgetEntry from "../../components/NewBudgetEntry/NewBudgetEntry";
+// import Header from "../../components/Header/Header";
+
+// const BudgetPage = () => {
+//   const [budgets, setBudgets] = useState([]);
+//   const [error, setError] = useState("");
+//   const [successMessage, setSuccessMessage] = useState("");
+
+//   // Fetch budgets from the server when the component mounts
+//   useEffect(() => {
+//     const fetchBudgets = async () => {
+//       try {
+//         const response = await axios.get("http://localhost:8080/api/budget");
+//         setBudgets(response.data); // Set the fetched budgets to state
+//       } catch (err) {
+//         setError("Error fetching budgets.");
+//       }
+//     };
+//     fetchBudgets();
+//   }, []); // Empty dependency array ensures this only runs once on mount
+
+//   // Handle adding a new budget entry
+//   const handleAddBudget = async (newBudget) => {
+//     try {
+//       const response = await axios.post(
+//         "http://localhost:8080/api/budget",
+//         newBudget
+//       );
+//       setBudgets((prev) => [...prev, response.data]); // Add the new budget to the list
+//       setSuccessMessage("Budget added successfully!");
+//     } catch (err) {
+//       setError("Error adding budget.");
+//     }
+//   };
+
+//   // Handle deleting a budget entry
+//   const handleDeleteBudget = async (id) => {
+//     try {
+//       await axios.delete(`http://localhost:8080/api/budget/${id}`);
+//       setBudgets(budgets.filter((budget) => budget.id !== id)); // Remove the deleted budget from state
+//       setSuccessMessage("Budget deleted successfully!");
+//     } catch (err) {
+//       setError("Error deleting budget.");
+//     }
+//   };
+
+//   return (
+//     <Container maxWidth="lg" sx={{ padding: 4 }}>
+//       <Box m="20px">
+//         <Header title="BUDGET" subtitle="Tracking your expenses" />{" "}
+//         <Box
+//           display="flex"
+//           justifyContent="space-between"
+//           flexDirection={{ xs: "column", md: "row" }}
+//         ></Box>
+//       </Box>
+
+//       {/* Display error or success messages */}
+//       <Snackbar
+//         open={Boolean(error)}
+//         autoHideDuration={6000}
+//         onClose={() => setError("")}
+//       >
+//         <Alert severity="error" onClose={() => setError("")}>
+//           {error}
+//         </Alert>
+//       </Snackbar>
+//       <Snackbar
+//         open={Boolean(successMessage)}
+//         autoHideDuration={6000}
+//         onClose={() => setSuccessMessage("")}
+//       >
+//         <Alert severity="success" onClose={() => setSuccessMessage("")}>
+//           {successMessage}
+//         </Alert>
+//       </Snackbar>
+
+//       {/* New Budget Entry Form */}
+//       <NewBudgetEntry
+//         onAddBudget={handleAddBudget}
+//         error={error}
+//         setError={setError}
+//         successMessage={successMessage}
+//         setSuccessMessage={setSuccessMessage}
+//       />
+
+//       {/* Budget Table */}
+//       <TableContainer component={Paper} sx={{ marginBottom: 3 }}>
+//         <Table aria-label="Budget Table">
+//           <TableHead>
+//             <TableRow>
+//               <TableCell>Category</TableCell>
+//               <TableCell>Amount</TableCell>
+//               <TableCell>Expense</TableCell>
+//               <TableCell>Actions</TableCell>
+//             </TableRow>
+//           </TableHead>
+//           <TableBody>
+//             {budgets.map((budget) => (
+//               <TableRow key={budget.id}>
+//                 <TableCell>{budget.category}</TableCell>
+//                 <TableCell>{budget.amount}</TableCell>
+//                 <TableCell>{budget.expense}</TableCell>
+//                 <TableCell>
+//                   <Button
+//                     variant="outlined"
+//                     color="secondary"
+//                     onClick={() => handleDeleteBudget(budget.id)}
+//                   >
+//                     Delete
+//                   </Button>
+//                 </TableCell>
+//               </TableRow>
+//             ))}
+//           </TableBody>
+//         </Table>
+//       </TableContainer>
+//     </Container>
+//   );
+// };
+
+// export default BudgetPage;
+
+// -=-=-===-
+
+// import React, { useState } from "react";
+// import {
+//   Grid,
+//   TextField,
+//   Button,
+//   MenuItem,
+//   Select,
+//   InputLabel,
+//   FormControl,
+// } from "@mui/material";
+
+// // Category options
+// const categories = [
+//   "Household",
+//   "Utilities",
+//   "Subscriptions",
+//   "Grocery",
+//   "Transportation",
+//   "Loans",
+//   "Credit Card",
+//   "Maintenance & Repair",
+//   "Health",
+//   "Children",
+//   "Miscellaneous",
+// ];
+
+// const NewBudgetEntry = ({
+//   onAddBudget,
+//   error,
+//   setError,
+//   successMessage,
+//   setSuccessMessage,
+// }) => {
+//   const [category, setCategory] = useState("");
+//   const [amount, setAmount] = useState("");
+//   const [expense, setExpense] = useState("");
+
+//   // Handle form submission
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+
+//     // Validate inputs
+//     if (!category || !amount || !expense) {
+//       setError("Please fill in all fields.");
+//       return;
+//     }
+
+//     const newBudget = { category, amount, expense };
+//     onAddBudget(newBudget); // Call the parent function to add the budget
+//     setCategory(""); // Clear the form fields
+//     setAmount("");
+//     setExpense("");
+//     setSuccessMessage("Budget added successfully!");
+//   };
+
+//   return (
+//     <form onSubmit={handleSubmit}>
+//       <Grid container spacing={2} alignItems="center">
+//         <Grid item xs={3}>
+//           <FormControl fullWidth>
+//             <InputLabel>Category</InputLabel>
+//             <Select
+//               value={category}
+//               onChange={(e) => setCategory(e.target.value)}
+//               label="Category"
+//             >
+//               {categories.map((category) => (
+//                 <MenuItem key={category} value={category}>
+//                   {category}
+//                 </MenuItem>
+//               ))}
+//             </Select>
+//           </FormControl>
+//         </Grid>
+//         <Grid item xs={3}>
+//           <TextField
+//             fullWidth
+//             label="Amount"
+//             type="number"
+//             value={amount}
+//             onChange={(e) => setAmount(e.target.value)}
+//             required
+//           />
+//         </Grid>
+//         <Grid item xs={3}>
+//           <TextField
+//             fullWidth
+//             label="Expense"
+//             type="number"
+//             value={expense}
+//             onChange={(e) => setExpense(e.target.value)}
+//             required
+//           />
+//         </Grid>
+//         <Grid item xs={3}>
+//           <Button type="submit" variant="contained" color="primary">
+//             Add
+//           </Button>
+//         </Grid>
+//       </Grid>
+//     </form>
+//   );
+// };
+
+// export default NewBudgetEntry;
