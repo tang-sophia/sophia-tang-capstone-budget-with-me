@@ -8,9 +8,9 @@ import Header from "../../components/Header/Header";
 const DashboardPage = () => {
   return (
     <div className="dashboard">
-      <Box>
+      {/* <Box>
         <Header title="DASHBOARD" subtitle="Monitoring your Financial Health" />
-      </Box>
+      </Box> */}
       <div className="dashboard__cards">
         <DashboardCard
           title="Total Expenses"
