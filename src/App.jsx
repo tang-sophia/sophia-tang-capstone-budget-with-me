@@ -28,9 +28,9 @@ function App() {
               <Route path="/budget" element={<BudgetPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
             </Routes>
-            <Footer />
           </main>
         </div>
+        <Footer />
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
