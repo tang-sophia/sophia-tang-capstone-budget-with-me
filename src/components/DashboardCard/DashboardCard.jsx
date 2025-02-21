@@ -15,7 +15,7 @@ const DashboardCard = ({
         <span>{subtitle}</span>
         <span className="dashboard-card__amount">{amount}</span>
         <span>{amountChange}</span>
-        <span className="dashboard-card__per">{percentage}</span>
+        <span className="dashboard-card__percentage">{percentage}</span>
       </div>
     </div>
   );
