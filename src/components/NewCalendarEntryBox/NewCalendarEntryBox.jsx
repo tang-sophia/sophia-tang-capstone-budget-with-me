@@ -17,7 +17,7 @@ const categories = [
   "Household",
   "Utilities",
   "Subscriptions",
-  "Grocery",
+  "Groceries",
   "Transportation",
   "Loans",
   "Credit Card",

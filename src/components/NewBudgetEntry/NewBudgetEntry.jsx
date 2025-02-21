@@ -1,5 +1,5 @@
 import "../NewBudgetEntry/NewBudgetEntry.scss";
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   TextField,
@@ -16,7 +16,7 @@ const NewBudgetEntry = ({ newBudget, handleInputChange, handleAddBudget }) => {
     "Household",
     "Utilities",
     "Subscriptions",
-    "Grocery",
+    "Groceries",
     "Transportation",
     "Loans",
     "Credit Card",
@@ -25,6 +25,25 @@ const NewBudgetEntry = ({ newBudget, handleInputChange, handleAddBudget }) => {
     "Children",
     "Miscellaneous",
   ];
+
+  // Month options
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  // Get current month
+  const currentMonth = new Date().getMonth(); // 0-based index (0 = January, 11 = December)
 
   return (
     <Box
@@ -37,6 +56,25 @@ const NewBudgetEntry = ({ newBudget, handleInputChange, handleAddBudget }) => {
         flexDirection: { xs: "column", md: "row" },
       }}
     >
+      {/* Month Dropdown */}
+      <FormControl fullWidth>
+        <InputLabel id="month-label">Month</InputLabel>
+        <Select
+          labelId="month-label"
+          id="month"
+          name="month"
+          value={newBudget.month || months[currentMonth]} // default to current month
+          label="Month"
+          onChange={handleInputChange}
+        >
+          {months.map((month, index) => (
+            <MenuItem key={month} value={month}>
+              {month}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
       {/* Category Dropdown */}
       <FormControl fullWidth>
         <InputLabel id="category-label">Category</InputLabel>

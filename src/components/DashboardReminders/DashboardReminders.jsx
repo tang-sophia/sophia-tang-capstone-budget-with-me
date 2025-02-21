@@ -38,9 +38,25 @@ const DashboardReminders = () => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        const filteredData = data.sort(
-          (a, b) => new Date(a.due_date) - new Date(b.due_date)
+        // Get the start and end dates for the current month
+        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        const endOfMonth = new Date(
+          today.getFullYear(),
+          today.getMonth() + 1,
+          0
         );
+
+        const filteredData = data
+          .filter((item) => {
+            const dueDate = new Date(item.due_date);
+            // Check if due date is today or in the future and within the current month
+            return (
+              dueDate >= today &&
+              dueDate >= startOfMonth &&
+              dueDate <= endOfMonth
+            );
+          })
+          .sort((a, b) => new Date(a.due_date) - new Date(b.due_date));
 
         const mappedData = filteredData.map((item, index) => ({
           id: index,

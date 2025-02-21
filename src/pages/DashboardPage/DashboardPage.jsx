@@ -13,7 +13,7 @@ const DashboardPage = () => {
           percentage="10% more than last week"
         />
         <DashboardCard
-          title="Total Revenue"
+          title="Lowest Expense category"
           amount="$10,000"
           percentage="5% less than last week"
         />
