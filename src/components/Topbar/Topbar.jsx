@@ -93,11 +93,7 @@ const Topbar = () => {
           )}
         </IconButton>
         <IconButton onClick={handleNotificationClick}>
-          <Badge
-            color="error"
-            variant="dot"
-            invisible={!hasDueToday} // Hide badge if no due date today
-          >
+          <Badge color="error" variant="dot" invisible={!hasDueToday}>
             <NotificationsOutlinedIcon />
           </Badge>
         </IconButton>
@@ -109,7 +105,6 @@ const Topbar = () => {
         </IconButton>
       </Box>
 
-      {/* NOTIFICATION POPOVER */}
       <Popover
         id={id}
         open={open}
