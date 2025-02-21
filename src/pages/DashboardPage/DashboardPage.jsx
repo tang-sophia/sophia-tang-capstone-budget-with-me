@@ -1,16 +1,11 @@
 import "../DashboardPage/DashboardPage.scss";
-// import { Box } from "@mui/material";
 import DashboardCard from "../../components/DashboardCard/DashboardCard";
 import DashboardExpenses from "../../components/DashboardExpenses/DashboardExpenses";
 import DashboardReminders from "../../components/DashboardReminders/DashboardReminders";
-// import Header from "../../components/Header/Header";
 
 const DashboardPage = () => {
   return (
     <div className="dashboard">
-      {/* <Box>
-        <Header title="DASHBOARD" subtitle="Monitoring your Financial Health" />
-      </Box> */}
       <div className="dashboard__cards">
         <DashboardCard
           title="Total Expenses"

@@ -104,11 +104,12 @@ const DashboardReminders = () => {
         <ChevronRightIcon />
       </Box>
       <Box
+        className="dashboard-reminder__columns"
         display="flex"
-        justifyContent="space-between"
+        justifyContent="center"
         flexDirection={{ xs: "column", md: "row" }}
       >
-        <Box m="40px 0 0 0" height="100vh">
+        <Box m="40px 0 0 0" height="50vh" display="flex" width="90%">
           <DataGrid
             rows={rows}
             columns={columns}

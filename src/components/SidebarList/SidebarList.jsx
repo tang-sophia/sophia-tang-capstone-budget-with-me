@@ -15,7 +15,7 @@ const SidebarList = ({ colorMode, theme }) => {
 
   const sidebarBackgroundColor = chroma(backgroundColor).darken(0.5).hex();
 
-  const sidebarPadding = "1.5rem";
+  const sidebarPadding = "1.5rem 1.5rem 65rem 1.5rem";
   const menuItemSpacing = "0";
 
   return (

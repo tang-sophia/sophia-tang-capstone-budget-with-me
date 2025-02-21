@@ -6,10 +6,7 @@
     overflow: auto;
     background-color: rgba($color: gray, $alpha: 0.2);
     border-radius: 0.625rem;
-    margin-left: 1rem;
-    margin-right: 1.25rem;
-    min-width: fit-content;
-    padding: 0 1rem 1rem 1rem;
+    width: 30rem;
   }
 
   &__title {
