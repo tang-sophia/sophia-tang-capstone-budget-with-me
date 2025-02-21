@@ -9,6 +9,8 @@ const DashboardPage = () => {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [formattedAmountChange, setFormattedAmountChange] = useState("");
   const [percentageChange, setPercentageChange] = useState("");
+  const [lowestCategory, setLowestCategory] = useState(""); // State to store the lowest category
+  const [highestCategory, setHighestCategory] = useState(""); // State to store the highest category
 
   useEffect(() => {
     const fetchBudgetData = async () => {
@@ -62,7 +64,33 @@ const DashboardPage = () => {
 
         const percentage =
           prevTotal === 0 ? 0 : ((currentTotal - prevTotal) / prevTotal) * 100;
-        setPercentageChange(Math.abs(percentage).toFixed(2)); // Use Math.abs() to remove the sign
+        setPercentageChange(Math.abs(percentage).toFixed(2));
+
+        // Calculate the lowest and highest categories for the current month
+        const categoryTotals = currentMonthExpenses.reduce((acc, entry) => {
+          if (!acc[entry.category]) {
+            acc[entry.category] = 0;
+          }
+          acc[entry.category] += parseFloat(entry.amount || 0);
+          return acc;
+        }, {});
+
+        const lowestCategoryEntry = Object.entries(categoryTotals).reduce(
+          (lowest, [category, total]) => {
+            return total < lowest.total ? { category, total } : lowest;
+          },
+          { category: "", total: Infinity }
+        );
+
+        const highestCategoryEntry = Object.entries(categoryTotals).reduce(
+          (highest, [category, total]) => {
+            return total > highest.total ? { category, total } : highest;
+          },
+          { category: "", total: -Infinity }
+        );
+
+        setLowestCategory(lowestCategoryEntry.category || "No data");
+        setHighestCategory(highestCategoryEntry.category || "No data");
       } catch (error) {
         console.error("Error fetching budget data:", error);
       }
@@ -107,13 +135,13 @@ const DashboardPage = () => {
           }
         />
         <DashboardCard
-          title="Lowest Expense category"
+          title={`Lowest Expense Category: ${lowestCategory}`}
           amount="$10,000"
           amountChange="amountChange"
           percentage="5% less than last month"
         />
         <DashboardCard
-          title="Highest Expense Category"
+          title={`Highest Expense Category: ${highestCategory}`}
           amount="$10,000"
           amountChange="amountChange"
           percentage="20% less than last month"

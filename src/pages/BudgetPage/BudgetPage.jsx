@@ -234,6 +234,7 @@ const BudgetPage = () => {
         </Box>
       </Box>
 
+      {/* Fixed row for Total */}
       <Box
         sx={{
           display: "flex",
