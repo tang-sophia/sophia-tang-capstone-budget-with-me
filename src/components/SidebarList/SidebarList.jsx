@@ -4,7 +4,7 @@ import "./SidebarList.scss";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
-import popcorn from "../../assets/popcorn-2.jpg";
+import vanessa from "../../assets/Vanessa.jpg";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
@@ -57,7 +57,7 @@ const SidebarList = ({ colorMode, theme }) => {
               <img
                 alt="profile-user"
                 height="100px"
-                src={popcorn}
+                src={vanessa}
                 style={{
                   cursor: "pointer",
                   borderRadius: "50%",

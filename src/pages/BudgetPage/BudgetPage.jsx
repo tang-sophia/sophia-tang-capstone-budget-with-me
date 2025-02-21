@@ -16,12 +16,12 @@ const BudgetPage = () => {
     category: "",
     amount: "",
     expense: "",
-    month: new Date().toLocaleString("default", { month: "long" }), // Default to current month
+    month: new Date().toLocaleString("default", { month: "long" }),
   });
   const [selectedMonth, setSelectedMonth] = useState(
     new Date().toLocaleString("default", { month: "long" })
-  ); // Initialize with current month
-  const [isAllMonths, setIsAllMonths] = useState(false); // Track "All Months" state
+  );
+  const [isAllMonths, setIsAllMonths] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [budgetToDelete, setBudgetToDelete] = useState({});
 
@@ -30,7 +30,7 @@ const BudgetPage = () => {
   }, []);
 
   useEffect(() => {
-    filterDataByMonth(selectedMonth); // Re-filter the data every time the selected month changes
+    filterDataByMonth(selectedMonth);
   }, [selectedMonth, budgetData]);
 
   const fetchData = async () => {
@@ -46,7 +46,7 @@ const BudgetPage = () => {
     const { name, value } = e.target;
     setNewBudget({ ...newBudget, [name]: value });
     if (name === "month") {
-      setSelectedMonth(value); // Synchronize dropdown month selection with button highlight
+      setSelectedMonth(value);
     }
   };
 
@@ -60,9 +60,9 @@ const BudgetPage = () => {
 
     const newBudgetEntry = {
       ...newBudget,
-      id: Date.now(), // Temporarily assigning a unique ID until the real one is returned from the server
+      id: Date.now(),
     };
-    // Optimistically update the UI state immediately
+
     setBudgetData((prevData) => [...prevData, newBudgetEntry]);
 
     try {
@@ -87,7 +87,7 @@ const BudgetPage = () => {
       console.error("Error adding budget:", error);
       setBudgetData((prevData) =>
         prevData.filter((entry) => entry.id !== newBudgetEntry.id)
-      ); // Remove optimistically added entry
+      );
       alert("There was an error adding the budget entry.");
     }
   };
@@ -114,7 +114,7 @@ const BudgetPage = () => {
 
   const filterDataByMonth = (month) => {
     if (isAllMonths) {
-      setFilteredData(budgetData); // Show all entries
+      setFilteredData(budgetData);
     } else {
       const filtered = budgetData.filter((entry) => entry.month === month);
       setFilteredData(filtered);
@@ -191,8 +191,8 @@ const BudgetPage = () => {
       >
         <Button
           onClick={() => {
-            setIsAllMonths(true); // Set flag to show all months
-            setSelectedMonth(null); // Reset selected month to show all entries
+            setIsAllMonths(true);
+            setSelectedMonth(null);
           }}
           variant={isAllMonths ? "contained" : "outlined"}
         >
@@ -206,7 +206,7 @@ const BudgetPage = () => {
                 month: "long",
               });
               setSelectedMonth(monthName);
-              setIsAllMonths(false); // Reset the "All Months" flag
+              setIsAllMonths(false);
             }}
             variant={
               selectedMonth ===
@@ -234,7 +234,6 @@ const BudgetPage = () => {
         </Box>
       </Box>
 
-      {/* Fixed row for Total */}
       <Box
         sx={{
           display: "flex",
