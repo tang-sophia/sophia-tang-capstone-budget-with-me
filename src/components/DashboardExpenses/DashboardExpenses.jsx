@@ -3,14 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Link } from "react-router-dom";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 const DashboardExpenses = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Function to get current month and year
   const getCurrentMonthYear = () => {
     const now = new Date();
     const month = now.toLocaleString("default", { month: "long" });
@@ -30,8 +29,14 @@ const DashboardExpenses = () => {
         }
         const result = await response.json();
 
-        // Aggregate data by category
-        const aggregatedData = result.reduce((acc, item) => {
+        const currentMonth = new Date().toLocaleString("default", {
+          month: "long",
+        });
+        const currentMonthData = result.filter(
+          (item) => item.month.toLowerCase() === currentMonth.toLowerCase()
+        );
+
+        const aggregatedData = currentMonthData.reduce((acc, item) => {
           const existingCategory = acc.find(
             (i) => i.category === item.category
           );
@@ -54,7 +59,7 @@ const DashboardExpenses = () => {
     };
 
     fetchData();
-    return () => controller.abort(); // Cleanup on unmount
+    return () => controller.abort();
   }, []);
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#AF19FF"];
