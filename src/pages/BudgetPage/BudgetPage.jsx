@@ -16,7 +16,12 @@ const BudgetPage = () => {
     category: "",
     amount: "",
     expense: "",
+    month: new Date().toLocaleString("default", { month: "long" }), // Default to current month
   });
+  const [selectedMonth, setSelectedMonth] = useState(
+    new Date().toLocaleString("default", { month: "long" })
+  ); // Initialize with current month
+  const [isAllMonths, setIsAllMonths] = useState(false); // Track "All Months" state
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [budgetToDelete, setBudgetToDelete] = useState({});
 
@@ -24,11 +29,14 @@ const BudgetPage = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    filterDataByMonth(selectedMonth); // Re-filter the data every time the selected month changes
+  }, [selectedMonth, budgetData]);
+
   const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/budget");
       setBudgetData(response.data);
-      setFilteredData(response.data); // Default to showing all data
     } catch (error) {
       console.error("Error fetching budget data:", error);
     }
@@ -37,6 +45,9 @@ const BudgetPage = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewBudget({ ...newBudget, [name]: value });
+    if (name === "month") {
+      setSelectedMonth(value); // Synchronize dropdown month selection with button highlight
+    }
   };
 
   const handleAddBudget = async (e) => {
@@ -47,15 +58,37 @@ const BudgetPage = () => {
       return;
     }
 
+    const newBudgetEntry = {
+      ...newBudget,
+      id: Date.now(), // Temporarily assigning a unique ID until the real one is returned from the server
+    };
+    // Optimistically update the UI state immediately
+    setBudgetData((prevData) => [...prevData, newBudgetEntry]);
+
     try {
       const response = await axios.post(
         "http://localhost:8080/api/budget",
         newBudget
       );
-      setBudgetData([...budgetData, response.data]);
-      setNewBudget({ category: "", amount: "", expense: "" });
+      setBudgetData((prevData) =>
+        prevData.map((entry) =>
+          entry.id === newBudgetEntry.id
+            ? { ...entry, id: response.data.id }
+            : entry
+        )
+      );
+      setNewBudget({
+        category: "",
+        amount: "",
+        expense: "",
+        month: new Date().toLocaleString("default", { month: "long" }),
+      });
     } catch (error) {
       console.error("Error adding budget:", error);
+      setBudgetData((prevData) =>
+        prevData.filter((entry) => entry.id !== newBudgetEntry.id)
+      ); // Remove optimistically added entry
+      alert("There was an error adding the budget entry.");
     }
   };
 
@@ -70,8 +103,8 @@ const BudgetPage = () => {
         `http://localhost:8080/api/budget/${budgetToDelete.id}`
       );
 
-      setBudgetData(
-        budgetData.filter((entry) => entry.id !== budgetToDelete.id)
+      setBudgetData((prevData) =>
+        prevData.filter((entry) => entry.id !== budgetToDelete.id)
       );
       setOpenDeleteDialog(false);
     } catch (error) {
@@ -79,22 +112,20 @@ const BudgetPage = () => {
     }
   };
 
-  // Function to filter data by month
-  const filterByMonth = (month) => {
-    const filtered = budgetData.filter((entry) => {
-      const entryMonth = new Date(entry.date).getMonth(); // Assuming 'date' is a field in your data
-      return entryMonth === month;
-    });
-    setFilteredData(filtered);
+  const filterDataByMonth = (month) => {
+    if (isAllMonths) {
+      setFilteredData(budgetData); // Show all entries
+    } else {
+      const filtered = budgetData.filter((entry) => entry.month === month);
+      setFilteredData(filtered);
+    }
   };
 
-  // Calculate the total amount
   const totalAmount = filteredData.reduce(
     (total, entry) => total + parseFloat(entry.amount),
     0
   );
 
-  // Format total with commas and 2 decimal places
   const formattedTotalAmount = totalAmount.toLocaleString(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -158,9 +189,32 @@ const BudgetPage = () => {
         flexWrap="wrap"
         gap={1}
       >
-        <Button onClick={() => setFilteredData(budgetData)}>All Months</Button>
+        <Button
+          onClick={() => {
+            setIsAllMonths(true); // Set flag to show all months
+            setSelectedMonth(null); // Reset selected month to show all entries
+          }}
+          variant={isAllMonths ? "contained" : "outlined"}
+        >
+          All Months
+        </Button>
         {Array.from({ length: 12 }, (_, i) => (
-          <Button key={i} onClick={() => filterByMonth(i)}>
+          <Button
+            key={i}
+            onClick={() => {
+              const monthName = new Date(0, i).toLocaleString("default", {
+                month: "long",
+              });
+              setSelectedMonth(monthName);
+              setIsAllMonths(false); // Reset the "All Months" flag
+            }}
+            variant={
+              selectedMonth ===
+              new Date(0, i).toLocaleString("default", { month: "long" })
+                ? "contained"
+                : "outlined"
+            }
+          >
             {new Date(0, i).toLocaleString("default", { month: "long" })}
           </Button>
         ))}
