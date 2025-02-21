@@ -3,19 +3,35 @@ import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-// import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const DashboardReminders = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // const navigate = useNavigate();
 
   const columns = [
-    { field: "name", headerName: "Financial Activity", flex: 1 },
-    { field: "due_date", headerName: "Due Date", flex: 1 },
-    { field: "category", headerName: "Category", flex: 1 },
+    {
+      field: "name",
+      headerName: "Financial Activity",
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "due_date",
+      headerName: "Due Date",
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "category",
+      headerName: "Category",
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
+    },
   ];
 
   const isToday = (date) => {
@@ -38,7 +54,6 @@ const DashboardReminders = () => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        // Get the start and end dates for the current month
         const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
         const endOfMonth = new Date(
           today.getFullYear(),
@@ -49,7 +64,7 @@ const DashboardReminders = () => {
         const filteredData = data
           .filter((item) => {
             const dueDate = new Date(item.due_date);
-            // Check if due date is today or in the future and within the current month
+
             return (
               dueDate >= today &&
               dueDate >= startOfMonth &&
