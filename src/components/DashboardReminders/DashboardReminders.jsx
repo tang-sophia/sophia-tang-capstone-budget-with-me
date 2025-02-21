@@ -38,10 +38,23 @@ const DashboardReminders = () => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
+        // Get the start and end dates for the current month
+        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        const endOfMonth = new Date(
+          today.getFullYear(),
+          today.getMonth() + 1,
+          0
+        );
+
         const filteredData = data
           .filter((item) => {
             const dueDate = new Date(item.due_date);
-            return dueDate >= today;
+            // Check if due date is today or in the future and within the current month
+            return (
+              dueDate >= today &&
+              dueDate >= startOfMonth &&
+              dueDate <= endOfMonth
+            );
           })
           .sort((a, b) => new Date(a.due_date) - new Date(b.due_date));
 
@@ -71,7 +84,7 @@ const DashboardReminders = () => {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        height="30vh"
+        height="25vh"
       >
         <CircularProgress />
       </Box>
@@ -84,7 +97,7 @@ const DashboardReminders = () => {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        height="30vh"
+        height="25vh"
       >
         <Typography color="error">{error}</Typography>
       </Box>
@@ -107,18 +120,17 @@ const DashboardReminders = () => {
         <ChevronRightIcon />
       </Box>
       <Box
+        className="dashboard-reminder__columns"
         display="flex"
-        justifyContent="space-between"
+        justifyContent="center"
         flexDirection={{ xs: "column", md: "row" }}
       >
-        <Box m="40px 0 0 0" height="30vh" width={"100%"}>
+        <Box m="40px 0 0 0" height="50vh" display="flex" width="90%">
           <DataGrid
             rows={rows}
             columns={columns}
             disableColumnResize
             sx={{ width: "100%" }}
-            pageSize={5}
-            rowsPerPageOptions={[5, 10, 20]}
             getRowClassName={(params) =>
               params.row.isDueToday ? "highlight-row" : ""
             }
