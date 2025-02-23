@@ -52,7 +52,7 @@ export const tokens = (mode) => ({
     : {
         primary: {
           main: "#1976d2",
-          100: "#B3D1FF", // Added fallback for light mode
+          100: "#B3D1FF", 
         },
         secondary: {
           main: "#f50057",
