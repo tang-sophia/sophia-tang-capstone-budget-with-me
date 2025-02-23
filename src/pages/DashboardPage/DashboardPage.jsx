@@ -109,7 +109,7 @@ const DashboardPage = () => {
 
         let lowestAmountChange;
         if (lowestCategoryEntry.total === prevMonthLowestCategoryTotal) {
-          lowestAmountChange = "No change from last month";
+          lowestAmountChange = "No change";
         } else {
           lowestAmountChange = `${Math.abs(
             lowestCategoryEntry.total - prevMonthLowestCategoryTotal
@@ -277,7 +277,7 @@ const DashboardPage = () => {
                   color: lowestCategory.isIncrease ? "red" : "green",
                 }}
               >
-                {lowestCategory.amountChange || "No data"}
+                {lowestCategory.amountChange || "No data"} from last month
               </span>
               <div
                 className="dashboard__percentage-change"
