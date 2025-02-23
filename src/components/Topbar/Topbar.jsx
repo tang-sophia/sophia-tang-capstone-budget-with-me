@@ -9,7 +9,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { ColorModeContext, tokens } from "../../theme";
@@ -20,7 +19,6 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 const Topbar = () => {
   const theme = useTheme();
@@ -69,20 +67,6 @@ const Topbar = () => {
 
   const handleClosePopover = () => {
     setAnchorEl(null);
-  };
-
-  const handleDeleteItem = async (itemId) => {
-    try {
-      // Call the API to delete the item (if applicable)
-      // await fetch(`http://localhost:8080/api/calendar/${itemId}`, { method: "DELETE" });
-
-      // Update the state to remove the deleted item
-      const updatedItems = dueTodayItems.filter((item) => item.id !== itemId);
-      setDueTodayItems(updatedItems);
-      setHasDueToday(updatedItems.length > 0);
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
   };
 
   const open = Boolean(anchorEl);
@@ -158,21 +142,12 @@ const Topbar = () => {
             </Typography>
           ) : dueTodayItems.length > 0 ? (
             <List>
-              {dueTodayItems.map((item) => (
-                <ListItem key={item.id} sx={{ py: 1 }}>
+              {dueTodayItems.map((item, index) => (
+                <ListItem key={index} sx={{ py: 1 }}>
                   <ListItemText
                     primary={item.name}
                     secondary={`Category: ${item.category}`}
                   />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      onClick={() => handleDeleteItem(item.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
                 </ListItem>
               ))}
             </List>
