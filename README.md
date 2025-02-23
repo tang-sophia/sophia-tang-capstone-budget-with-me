@@ -1,6 +1,6 @@
 # Project Title
 
-Budget with Me
+Budget with me
 
 ## Overview
 
