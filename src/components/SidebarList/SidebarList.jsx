@@ -71,11 +71,13 @@ const SidebarList = ({ colorMode, theme }) => {
               mt="1rem"
               style={{ backgroundColor: sidebarBackgroundColor }}
             >
-              <Typography variant="h3" fontWeight="bold" color={textColor}>
-                Budget with Me
-              </Typography>
-              <Typography variant="h4" color={textColor}>
-                Sophia Tang
+              <Typography
+                variant="h3"
+                fontWeight="bold"
+                color={textColor}
+                mt={4}
+              >
+                Budget with Sophia
               </Typography>
             </Box>
           </Box>
