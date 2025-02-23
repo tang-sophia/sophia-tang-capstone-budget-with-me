@@ -9,6 +9,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemSecondaryAction,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { ColorModeContext, tokens } from "../../theme";
@@ -19,6 +20,7 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const Topbar = () => {
   const theme = useTheme();
@@ -27,6 +29,8 @@ const Topbar = () => {
   const [hasDueToday, setHasDueToday] = useState(false);
   const [dueTodayItems, setDueTodayItems] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,6 +54,9 @@ const Topbar = () => {
         setHasDueToday(dueToday.length > 0);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -62,6 +69,20 @@ const Topbar = () => {
 
   const handleClosePopover = () => {
     setAnchorEl(null);
+  };
+
+  const handleDeleteItem = async (itemId) => {
+    try {
+      // Call the API to delete the item (if applicable)
+      // await fetch(`http://localhost:8080/api/calendar/${itemId}`, { method: "DELETE" });
+
+      // Update the state to remove the deleted item
+      const updatedItems = dueTodayItems.filter((item) => item.id !== itemId);
+      setDueTodayItems(updatedItems);
+      setHasDueToday(updatedItems.length > 0);
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
   };
 
   const open = Boolean(anchorEl);
@@ -78,29 +99,35 @@ const Topbar = () => {
         borderRadius="3px"
       >
         <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
-        <IconButton type="button" sx={{ p: 1 }}>
+        <IconButton type="button" sx={{ p: 1 }} aria-label="search">
           <SearchIcon />
         </IconButton>
       </Box>
 
       {/* ICONS */}
       <Box display="flex">
-        <IconButton onClick={colorMode.toggleColorMode}>
+        <IconButton
+          onClick={colorMode.toggleColorMode}
+          aria-label="toggle theme"
+        >
           {theme.palette.mode === "dark" ? (
             <DarkModeOutlinedIcon />
           ) : (
             <LightModeOutlinedIcon />
           )}
         </IconButton>
-        <IconButton onClick={handleNotificationClick}>
+        <IconButton
+          onClick={handleNotificationClick}
+          aria-label="notifications"
+        >
           <Badge color="error" variant="dot" invisible={!hasDueToday}>
             <NotificationsOutlinedIcon />
           </Badge>
         </IconButton>
-        <IconButton>
+        <IconButton aria-label="settings">
           <SettingsOutlinedIcon />
         </IconButton>
-        <IconButton>
+        <IconButton aria-label="profile">
           <PersonOutlinedIcon />
         </IconButton>
       </Box>
@@ -123,14 +150,29 @@ const Topbar = () => {
           <Typography variant="h6" sx={{ mb: 2 }}>
             Due Today
           </Typography>
-          {dueTodayItems.length > 0 ? (
+          {loading ? (
+            <Typography variant="body1">Loading...</Typography>
+          ) : error ? (
+            <Typography variant="body1" color="error">
+              Error: {error}
+            </Typography>
+          ) : dueTodayItems.length > 0 ? (
             <List>
-              {dueTodayItems.map((item, index) => (
-                <ListItem key={index}>
+              {dueTodayItems.map((item) => (
+                <ListItem key={item.id} sx={{ py: 1 }}>
                   <ListItemText
                     primary={item.name}
                     secondary={`Category: ${item.category}`}
                   />
+                  <ListItemSecondaryAction>
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => handleDeleteItem(item.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
                 </ListItem>
               ))}
             </List>
