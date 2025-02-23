@@ -103,14 +103,12 @@ const DashboardPage = () => {
           { category: "", total: -Infinity }
         );
 
-        // Calculate amountChange and percentageChange for the lowest category
         const prevMonthLowestCategoryTotal = prevMonthExpenses
           .filter((entry) => entry.category === lowestCategoryEntry.category)
           .reduce((sum, entry) => sum + parseFloat(entry.amount || 0), 0);
 
         let lowestAmountChange;
         if (lowestCategoryEntry.total === prevMonthLowestCategoryTotal) {
-          // If there is no change, display "No change from last month"
           lowestAmountChange = "No change from last month";
         } else {
           lowestAmountChange = `${Math.abs(
@@ -130,7 +128,6 @@ const DashboardPage = () => {
         let lowestPercentageChange;
         let lowestPercentageChangeDisplay;
         if (prevMonthLowestCategoryTotal === 0) {
-          // If the previous month's total is zero, the percentage change should be 100% if the current total is greater than zero
           lowestPercentageChange = lowestCategoryEntry.total > 0 ? 100 : 0;
           lowestPercentageChangeDisplay = `${Math.abs(
             lowestPercentageChange
@@ -138,7 +135,6 @@ const DashboardPage = () => {
             lowestCategoryEntry.total > prevMonthLowestCategoryTotal ? "↑" : "↓"
           }`;
         } else if (lowestCategoryEntry.total === prevMonthLowestCategoryTotal) {
-          // If there is no change, display 0.00% with no arrow
           lowestPercentageChange = 0;
           lowestPercentageChangeDisplay = `${Math.abs(
             lowestPercentageChange
@@ -162,14 +158,12 @@ const DashboardPage = () => {
           isIncrease: lowestCategoryEntry.total > prevMonthLowestCategoryTotal,
         });
 
-        // Calculate amountChange and percentageChange for the highest category
         const prevMonthHighestCategoryTotal = prevMonthExpenses
           .filter((entry) => entry.category === highestCategoryEntry.category)
           .reduce((sum, entry) => sum + parseFloat(entry.amount || 0), 0);
 
         let highestAmountChange;
         if (highestCategoryEntry.total === prevMonthHighestCategoryTotal) {
-          // If there is no change, display "No change from last month"
           highestAmountChange = "No change from last month";
         } else {
           highestAmountChange = `${Math.abs(
@@ -189,7 +183,6 @@ const DashboardPage = () => {
         let highestPercentageChange;
         let highestPercentageChangeDisplay;
         if (prevMonthHighestCategoryTotal === 0) {
-          // If the previous month's total is zero, the percentage change should be 100% if the current total is greater than zero
           highestPercentageChange = highestCategoryEntry.total > 0 ? 100 : 0;
           highestPercentageChangeDisplay = `${Math.abs(
             highestPercentageChange
@@ -201,7 +194,6 @@ const DashboardPage = () => {
         } else if (
           highestCategoryEntry.total === prevMonthHighestCategoryTotal
         ) {
-          // If there is no change, display 0.00% with no arrow
           highestPercentageChange = 0;
           highestPercentageChangeDisplay = `${Math.abs(
             highestPercentageChange
