@@ -140,7 +140,7 @@ const DashboardReminders = () => {
         justifyContent="center"
         flexDirection={{ xs: "column", md: "row" }}
       >
-        <Box m="40px 0 0 0" height="50vh" display="flex" width="90%">
+        <Box m="40px 0 0 0" height="40vh" display="flex" width="90%">
           <DataGrid
             rows={rows}
             columns={columns}
