@@ -27,6 +27,8 @@ const Topbar = () => {
   const [hasDueToday, setHasDueToday] = useState(false);
   const [dueTodayItems, setDueTodayItems] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,6 +52,9 @@ const Topbar = () => {
         setHasDueToday(dueToday.length > 0);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -78,29 +83,35 @@ const Topbar = () => {
         borderRadius="3px"
       >
         <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
-        <IconButton type="button" sx={{ p: 1 }}>
+        <IconButton type="button" sx={{ p: 1 }} aria-label="search">
           <SearchIcon />
         </IconButton>
       </Box>
 
       {/* ICONS */}
       <Box display="flex">
-        <IconButton onClick={colorMode.toggleColorMode}>
+        <IconButton
+          onClick={colorMode.toggleColorMode}
+          aria-label="toggle theme"
+        >
           {theme.palette.mode === "dark" ? (
             <DarkModeOutlinedIcon />
           ) : (
             <LightModeOutlinedIcon />
           )}
         </IconButton>
-        <IconButton onClick={handleNotificationClick}>
+        <IconButton
+          onClick={handleNotificationClick}
+          aria-label="notifications"
+        >
           <Badge color="error" variant="dot" invisible={!hasDueToday}>
             <NotificationsOutlinedIcon />
           </Badge>
         </IconButton>
-        <IconButton>
+        <IconButton aria-label="settings">
           <SettingsOutlinedIcon />
         </IconButton>
-        <IconButton>
+        <IconButton aria-label="profile">
           <PersonOutlinedIcon />
         </IconButton>
       </Box>
@@ -123,10 +134,16 @@ const Topbar = () => {
           <Typography variant="h6" sx={{ mb: 2 }}>
             Due Today
           </Typography>
-          {dueTodayItems.length > 0 ? (
+          {loading ? (
+            <Typography variant="body1">Loading...</Typography>
+          ) : error ? (
+            <Typography variant="body1" color="error">
+              Error: {error}
+            </Typography>
+          ) : dueTodayItems.length > 0 ? (
             <List>
               {dueTodayItems.map((item, index) => (
-                <ListItem key={index}>
+                <ListItem key={index} sx={{ py: 1 }}>
                   <ListItemText
                     primary={item.name}
                     secondary={`Category: ${item.category}`}
