@@ -53,7 +53,7 @@ const Topbar = () => {
         setHasDueToday(dueToday.length > 0);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setDueTodayItems([]); // Reset items on error
+        setDueTodayItems([]);
         setError(error.message);
       } finally {
         setLoading(false);
@@ -99,7 +99,6 @@ const Topbar = () => {
         </IconButton>
       </Box>
 
-      {/* NOTIFICATION POPOVER */}
       <Popover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}

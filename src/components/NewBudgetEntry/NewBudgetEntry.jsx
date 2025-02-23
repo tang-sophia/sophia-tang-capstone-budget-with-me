@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 
 const NewBudgetEntry = ({ newBudget, handleInputChange, handleAddBudget }) => {
-  // Category options
   const categories = [
     "Household",
     "Utilities",
@@ -26,7 +25,6 @@ const NewBudgetEntry = ({ newBudget, handleInputChange, handleAddBudget }) => {
     "Miscellaneous",
   ];
 
-  // Month options
   const months = [
     "January",
     "February",
@@ -42,8 +40,7 @@ const NewBudgetEntry = ({ newBudget, handleInputChange, handleAddBudget }) => {
     "December",
   ];
 
-  // Get current month
-  const currentMonth = new Date().getMonth(); // 0-based index (0 = January, 11 = December)
+  const currentMonth = new Date().getMonth();
 
   return (
     <Box
@@ -56,14 +53,13 @@ const NewBudgetEntry = ({ newBudget, handleInputChange, handleAddBudget }) => {
         flexDirection: { xs: "column", md: "row" },
       }}
     >
-      {/* Month Dropdown */}
       <FormControl fullWidth>
         <InputLabel id="month-label">Month</InputLabel>
         <Select
           labelId="month-label"
           id="month"
           name="month"
-          value={newBudget.month || months[currentMonth]} // default to current month
+          value={newBudget.month || months[currentMonth]}
           label="Month"
           onChange={handleInputChange}
         >
@@ -75,7 +71,6 @@ const NewBudgetEntry = ({ newBudget, handleInputChange, handleAddBudget }) => {
         </Select>
       </FormControl>
 
-      {/* Category Dropdown */}
       <FormControl fullWidth>
         <InputLabel id="category-label">Category</InputLabel>
         <Select
@@ -95,7 +90,6 @@ const NewBudgetEntry = ({ newBudget, handleInputChange, handleAddBudget }) => {
         </Select>
       </FormControl>
 
-      {/* Amount Input */}
       <TextField
         label="Amount"
         name="amount"
@@ -106,7 +100,6 @@ const NewBudgetEntry = ({ newBudget, handleInputChange, handleAddBudget }) => {
         required
       />
 
-      {/* Expense Input */}
       <TextField
         label="Expense"
         name="expense"
@@ -116,7 +109,6 @@ const NewBudgetEntry = ({ newBudget, handleInputChange, handleAddBudget }) => {
         required
       />
 
-      {/* Submit Button */}
       <Button type="submit" variant="contained" color="secondary">
         Add
       </Button>
