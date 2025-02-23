@@ -32,28 +32,28 @@ const Topbar = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const showBackButton =
+    location.pathname === "/budget" || location.pathname === "/calendar";
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const response = await fetch("http://localhost:8080/api/calendar");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
+        if (!response.ok) throw new Error("Failed to fetch data");
+
         const data = await response.json();
+        const todayStr = new Date().toISOString().split("T")[0];
 
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        const dueToday = data.filter((item) => {
-          const dueDate = new Date(item.due_date);
-          dueDate.setHours(0, 0, 0, 0);
-          return dueDate.getTime() === today.getTime();
-        });
+        const dueToday = data.filter(
+          (item) => item.due_date.split("T")[0] === todayStr
+        );
 
         setDueTodayItems(dueToday);
         setHasDueToday(dueToday.length > 0);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setDueTodayItems([]); // Reset items on error
         setError(error.message);
       } finally {
         setLoading(false);
@@ -63,29 +63,10 @@ const Topbar = () => {
     fetchData();
   }, []);
 
-  const handleNotificationClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClosePopover = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "notification-popover" : undefined;
-
-  const handleBackButtonClick = () => {
-    if (location.pathname === "/budget" || location.pathname === "/calendar") {
-      navigate("/dashboard");
-    }
-  };
-
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
-      {/* BACK BUTTON */}
-      {(location.pathname === "/budget" ||
-        location.pathname === "/calendar") && (
-        <IconButton onClick={handleBackButtonClick} aria-label="back">
+      {showBackButton && (
+        <IconButton onClick={() => navigate("/dashboard")} aria-label="back">
           <ArrowBackIcon />
         </IconButton>
       )}
@@ -103,7 +84,7 @@ const Topbar = () => {
           )}
         </IconButton>
         <IconButton
-          onClick={handleNotificationClick}
+          onClick={(e) => setAnchorEl(e.currentTarget)}
           aria-label="notifications"
         >
           <Badge color="error" variant="dot" invisible={!hasDueToday}>
@@ -118,19 +99,13 @@ const Topbar = () => {
         </IconButton>
       </Box>
 
+      {/* NOTIFICATION POPOVER */}
       <Popover
-        id={id}
-        open={open}
+        open={Boolean(anchorEl)}
         anchorEl={anchorEl}
-        onClose={handleClosePopover}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <Box sx={{ p: 2, minWidth: 300 }}>
           <Typography variant="h6" sx={{ mb: 2 }}>
@@ -154,7 +129,7 @@ const Topbar = () => {
               ))}
             </List>
           ) : (
-            <Typography variant="body1">No items due today.</Typography>
+            <Typography variant="body1">No expenses due today.</Typography>
           )}
         </Box>
       </Popover>
