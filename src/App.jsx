@@ -22,7 +22,6 @@ function App() {
             <Topbar />
             <Routes>
               <Route path="/" element={<DashboardPage />} />
-              <Route path="/login" element={<LoginPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/budget" element={<BudgetPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
