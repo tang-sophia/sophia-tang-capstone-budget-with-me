@@ -34,6 +34,7 @@
     "react-pro-sidebar": "^1.1.0",
     "react-router-dom": "^7.1.5",
     "recharts": "^2.15.1",
+    "sass": "^1.85.0",
     "yup": "^1.6.1"
   },
   "devDependencies": {
