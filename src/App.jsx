@@ -8,6 +8,7 @@ import BudgetPage from "./pages/BudgetPage/BudgetPage";
 import CalendarPage from "./pages/CalendarPage/CalendarPage";
 import Topbar from "./components/Topbar/Topbar";
 import SidebarList from "./components/SidebarList/SidebarList";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -27,6 +28,7 @@ function App() {
               <Route path="/budget" element={<BudgetPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
             </Routes>
+            <Footer />
           </main>
         </div>
       </ThemeProvider>
