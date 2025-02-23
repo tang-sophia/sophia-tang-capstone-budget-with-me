@@ -1,0 +1,29 @@
+.dashboard-card {
+  &__container {
+    background-color: rgba($color: gray, $alpha: 0.2);
+    padding: 1rem 2rem;
+    margin-right: 1.25rem;
+    border-radius: 0.625rem;
+    width: 32.3rem;
+
+    &:hover {
+      background-color: rgba($color: gray, $alpha: 0.3);
+    }
+  }
+
+  &__data {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  &__amount {
+    padding-bottom: 0.5rem;
+  }
+}

@@ -1,0 +1,19 @@
+.dashboard-budget {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba($color: gray, $alpha: 0.2);
+    border-radius: 0.625rem;
+    margin-left: 1.25rem;
+    margin-right: 3rem;
+    min-width: fit-content;
+    width: 65.9rem;
+  }
+
+  &__title {
+    padding-top: 1rem;
+    position: relative;
+    top: 0.75rem;
+    justify-content: center;
+  }
+}
