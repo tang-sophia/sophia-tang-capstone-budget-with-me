@@ -62,7 +62,6 @@ const NewCalendarEntryBox = ({
             }}
           />
 
-          {/* Category Dropdown */}
           <FormControl fullWidth margin="normal">
             <InputLabel>Category</InputLabel>
             <Select

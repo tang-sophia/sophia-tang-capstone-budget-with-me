@@ -2,7 +2,6 @@ import "./App.scss";
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
-import LoginPage from "./pages/LoginPage/LoginPage";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
 import BudgetPage from "./pages/BudgetPage/BudgetPage";
 import CalendarPage from "./pages/CalendarPage/CalendarPage";
@@ -23,7 +22,6 @@ function App() {
             <Topbar />
             <Routes>
               <Route path="/" element={<DashboardPage />} />
-              <Route path="/login" element={<LoginPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/budget" element={<BudgetPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
