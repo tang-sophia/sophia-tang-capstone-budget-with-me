@@ -103,7 +103,6 @@ const DashboardPage = () => {
           { category: "", total: -Infinity }
         );
 
-        // Calculate amountChange and percentageChange for the lowest category
         const prevMonthLowestCategoryTotal = prevMonthExpenses
           .filter((entry) => entry.category === lowestCategoryEntry.category)
           .reduce((sum, entry) => sum + parseFloat(entry.amount || 0), 0);
@@ -117,12 +116,31 @@ const DashboardPage = () => {
           maximumFractionDigits: 2,
         });
 
-        const lowestPercentageChange =
-          prevMonthLowestCategoryTotal === 0
-            ? 0
-            : ((lowestCategoryEntry.total - prevMonthLowestCategoryTotal) /
-                prevMonthLowestCategoryTotal) *
-              100;
+        let lowestPercentageChange;
+        let lowestPercentageChangeDisplay;
+        if (prevMonthLowestCategoryTotal === 0) {
+          lowestPercentageChange = lowestCategoryEntry.total > 0 ? 100 : 0;
+          lowestPercentageChangeDisplay = `${Math.abs(
+            lowestPercentageChange
+          ).toFixed(2)}% ${
+            lowestCategoryEntry.total > prevMonthLowestCategoryTotal ? "↑" : "↓"
+          }`;
+        } else if (lowestCategoryEntry.total === prevMonthLowestCategoryTotal) {
+          lowestPercentageChange = 0;
+          lowestPercentageChangeDisplay = `${Math.abs(
+            lowestPercentageChange
+          ).toFixed(2)}%`;
+        } else {
+          lowestPercentageChange =
+            ((lowestCategoryEntry.total - prevMonthLowestCategoryTotal) /
+              prevMonthLowestCategoryTotal) *
+            100;
+          lowestPercentageChangeDisplay = `${Math.abs(
+            lowestPercentageChange
+          ).toFixed(2)}% ${
+            lowestCategoryEntry.total > prevMonthLowestCategoryTotal ? "↑" : "↓"
+          }`;
+        }
 
         setLowestCategory({
           ...lowestCategoryEntry,
@@ -131,13 +149,10 @@ const DashboardPage = () => {
               ? "up"
               : "down"
           }`,
-          percentageChange: `${Math.abs(lowestPercentageChange).toFixed(2)}% ${
-            lowestCategoryEntry.total > prevMonthLowestCategoryTotal ? "↑" : "↓"
-          }`,
+          percentageChange: lowestPercentageChangeDisplay,
           isIncrease: lowestCategoryEntry.total > prevMonthLowestCategoryTotal,
         });
 
-        // Calculate amountChange and percentageChange for the highest category
         const prevMonthHighestCategoryTotal = prevMonthExpenses
           .filter((entry) => entry.category === highestCategoryEntry.category)
           .reduce((sum, entry) => sum + parseFloat(entry.amount || 0), 0);
@@ -151,12 +166,37 @@ const DashboardPage = () => {
           maximumFractionDigits: 2,
         });
 
-        const highestPercentageChange =
-          prevMonthHighestCategoryTotal === 0
-            ? 0
-            : ((highestCategoryEntry.total - prevMonthHighestCategoryTotal) /
-                prevMonthHighestCategoryTotal) *
-              100;
+        let highestPercentageChange;
+        let highestPercentageChangeDisplay;
+        if (prevMonthHighestCategoryTotal === 0) {
+          highestPercentageChange = highestCategoryEntry.total > 0 ? 100 : 0;
+          highestPercentageChangeDisplay = `${Math.abs(
+            highestPercentageChange
+          ).toFixed(2)}% ${
+            highestCategoryEntry.total > prevMonthHighestCategoryTotal
+              ? "↑"
+              : "↓"
+          }`;
+        } else if (
+          highestCategoryEntry.total === prevMonthHighestCategoryTotal
+        ) {
+          highestPercentageChange = 0;
+          highestPercentageChangeDisplay = `${Math.abs(
+            highestPercentageChange
+          ).toFixed(2)}%`;
+        } else {
+          highestPercentageChange =
+            ((highestCategoryEntry.total - prevMonthHighestCategoryTotal) /
+              prevMonthHighestCategoryTotal) *
+            100;
+          highestPercentageChangeDisplay = `${Math.abs(
+            highestPercentageChange
+          ).toFixed(2)}% ${
+            highestCategoryEntry.total > prevMonthHighestCategoryTotal
+              ? "↑"
+              : "↓"
+          }`;
+        }
 
         setHighestCategory({
           ...highestCategoryEntry,
@@ -165,11 +205,7 @@ const DashboardPage = () => {
               ? "up"
               : "down"
           }`,
-          percentageChange: `${Math.abs(highestPercentageChange).toFixed(2)}% ${
-            highestCategoryEntry.total > prevMonthHighestCategoryTotal
-              ? "↑"
-              : "↓"
-          }`,
+          percentageChange: highestPercentageChangeDisplay,
           isIncrease:
             highestCategoryEntry.total > prevMonthHighestCategoryTotal,
         });
