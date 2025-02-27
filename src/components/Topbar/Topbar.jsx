@@ -43,7 +43,9 @@ const Topbar = () => {
         if (!response.ok) throw new Error("Failed to fetch data");
 
         const data = await response.json();
-        const todayStr = new Date().toISOString().split("T")[0];
+
+        // Get today's date in local timezone (YYYY-MM-DD)
+        const todayStr = new Date().toLocaleDateString("en-CA");
 
         const dueToday = data.filter(
           (item) => item.due_date.split("T")[0] === todayStr
